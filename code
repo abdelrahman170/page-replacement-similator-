@@ -1,0 +1,160 @@
+
+from queue import Queue
+
+def FIFO(pages, number, capacity):
+    L = list()
+
+    numbers = Queue()
+
+    PageFaults = 0
+    for i in range(number):
+        if (len(L) < capacity):
+            if (pages[i] not in L):
+
+                L.append(pages[i])
+                print(L, "miss")
+                PageFaults += 1
+                numbers.put(pages[i])
+        else:
+            if (pages[i] not in L):
+                val = numbers.queue[0]
+                numbers.get()
+                L.remove(val)
+
+                L.append(pages[i])
+                numbers.put(pages[i])
+                print(L, "miss")
+                PageFaults += 1
+            else: print("hit")
+    return PageFaults
+
+
+
+
+
+
+def LRU (pages,number, capacity):
+    s=[]
+    Faults = 0
+
+    for i in pages:
+
+        if i not in s:
+
+            if (len(s) == capacity):
+
+                s.remove(s[0])
+                s.append(i)
+
+            else:
+                s.append(i)
+
+            Faults += 1
+            print(s,"miss")
+        else:
+
+            s.remove(i)
+
+            s.append(i)
+            print(s,"hit")
+    return Faults
+
+
+
+
+
+def OPTIMAL (pages,number, capacity):
+
+    x = 0
+    page_faults = 0
+    p = []
+    for i in range(capacity):
+        p.append(-1)
+
+    for i in range(number):
+        f = 0
+        for j in range(capacity):
+            print("p[j]= ",p[j])
+            if(p[j] == pages[i]): 
+                
+                f = 1
+                print("page hit")
+                break
+
+        if f == 0:
+            if p[x] != -1:
+                max = -1
+                for k in range(capacity):
+                    f = 0
+                    j =  i
+                    print ("J = ",j)
+                    print("number = ", number)
+                    while j<number:
+                        j+=1
+                        print("k = ",p[k])
+                        if(p[k] == pages[j]):
+                            f = 1
+                            break
+                            
+                    if (f == 0 and min < j):
+                        max = j
+                        x = k
+
+            p[x] = pages[i]
+            x=(x+1)%capacity
+            page_faults=page_faults+1
+            for j in range(capacity):
+                if p[j] != -1:
+                    print (p[j])
+        else: 
+            print("no page fault")
+    return page_faults
+
+
+
+
+
+if __name__ == '__main__':
+    lst = []
+    print("enter the number of page numbers ")
+    number = int(input())
+
+    print("enter the number of initially free frames")
+    c = int(input())
+
+    print("enter ", number, " page numbers : ")
+
+for i in range(number):
+    pages = int(input())
+
+    lst.append(pages)  
+
+print("enter the type of algorithm u want to test")
+print("enter 0 for FIFO")
+print("enter 1 for LRU")
+print("enter 2 for Optimal")
+
+a=int(input())
+b=False
+
+while (b==False):
+    if a==0:
+        print("number of page faults acording to FIFO algorithm is : ", FIFO(lst, number, c))
+        b=True
+    elif a==1:
+      print("number of page faults acording to LRU algorithm is : ",LRU(lst,number,c))
+      b = True
+    elif a==2:
+       print("number of page faults acording to OPTIMAL algorithm is : ",OPTIMAL(lst,number,c))
+       b = True
+    else:
+     print("enter a valid number")
+     a = int(input())
+
+
+
+
+
+
+
+
